@@ -1,0 +1,2 @@
+rootProject.name = 'kafka'
+include 'common', 'consumer', 'producer', 'uiback'
