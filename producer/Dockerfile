@@ -1,9 +1,4 @@
 FROM openjdk:17-jdk-slim
-
-WORKDIR /app
-
-COPY build/libs/producer.jar /app/producer.jar
-
-CMD ["java", "-jar", "producer.jar"]
-
-EXPOSE 8081
+ARG JAR_FILE=./build/libs/producer.jar
+COPY ${JAR_FILE} app/producer.jar
+ENTRYPOINT ["java", "-jar", "/app/producer.jar"]

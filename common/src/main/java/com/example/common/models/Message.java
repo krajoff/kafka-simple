@@ -1,6 +1,5 @@
-package com.example.consumer.models;
+package com.example.common.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
@@ -10,19 +9,9 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Message")
-@Table(name = "messages")
 public class Message {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @Column(name = "code")
     private String code;
-
-    @Column(name = "label")
     private String label;
 
     @Override

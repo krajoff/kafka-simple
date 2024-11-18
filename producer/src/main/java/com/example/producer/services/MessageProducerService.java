@@ -1,6 +1,6 @@
 package com.example.producer.services;
 
-import com.example.producer.models.Message;
+import com.example.common.models.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,17 +25,18 @@ public class MessageProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 10000)
     public void sendMessage() {
-        Message message = new Message(UUID.randomUUID().toString(),
-                "Message sent at " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        Message message = new Message(UUID.randomUUID().toString(),"Сообщение отправлено "
+                + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         kafkaTemplate.send(topic, message)
-                .thenAccept(result -> logger.info("Message sent successfully: code={}, label={}, partition={}",
+                .thenAccept(result -> logger.info("[Message] Сообщение отправлено успешно:" +
+                                "code={}, label={}, partition={}",
                         message.getCode(), message.getLabel(),
                         result.getRecordMetadata().partition()))
                 .exceptionally(ex -> {
-                    logger.error("Failed to send message: code={}, label={}",
+                    logger.error("[Message] Ошибка отправки сообщения: code={}, label={}",
                             message.getCode(), message.getLabel(), ex);
                     return null;
                 });
