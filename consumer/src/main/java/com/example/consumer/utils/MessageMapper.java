@@ -7,10 +7,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class MessageMapper {
-
+    @Mapping(target = "id", ignore = true)
     public abstract MessageEntity messageToMessageEntity(Message message);
 
-    @Mapping(target = "id", ignore = true)
     public abstract Message messageEntityToMessage(MessageEntity messageEntity);
 
 }
