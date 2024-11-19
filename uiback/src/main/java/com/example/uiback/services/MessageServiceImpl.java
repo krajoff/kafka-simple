@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         var existingMessage = getMessageById(id);
         existingMessage.setCode(message.getCode());
         existingMessage.setLabel(message.getLabel());
-        return createMessage(message);
+        return createMessage(existingMessage);
     }
 
     @Override

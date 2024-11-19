@@ -63,6 +63,8 @@ services:
         condition: service_healthy
     environment:
       KAFKA_BROKER: kafka:9092
+    volumes:
+      - ./producer/build/libs/producer.jar:/app/producer.jar
     networks:
       - kafka-network
 

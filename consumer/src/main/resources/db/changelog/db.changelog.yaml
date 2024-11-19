@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-message-1
+      author: Stanislav
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            - schemaName: kafka
+            - tableName: messages
+      changes:
+        - insert:
+            tableName: messages
+            columns:
+              - column:
+                  name: code
+                  value: NEW_CODE
+              - column:
+                  name: label
+                  value: NEW_LABEL
