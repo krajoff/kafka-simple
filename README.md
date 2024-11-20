@@ -36,8 +36,8 @@ docker-compose up --build
 
 ### Эндпоинты UI-back
 #### 1. **Получить все сообщения**
-- **URL:** `GET http://localhost:8083/api/v1/messages`
-- **Описание:** Возвращает список всех сообщений.
+- **URL:** `GET http://localhost:8083/api/v1/messages?page=1&size=10`
+- **Описание:** Возвращает страницу 1 из 10 сообщений.
 - **Ответ:** 
   - **200 OK:** Список объектов `Message`.
 

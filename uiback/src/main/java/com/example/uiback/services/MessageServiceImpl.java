@@ -4,6 +4,8 @@ import com.example.uiback.exceptions.MessageNotFoundException;
 import com.example.uiback.models.Message;
 import com.example.uiback.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message getMessageById(Long id) {
-        return messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        return messageRepository.findById(id)
+                .orElseThrow(MessageNotFoundException::new);
     }
 
     @Override
-    public List<Message> getAllMessages() {
-        return messageRepository.findAll();
+    public List<Message> getMessages(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return messageRepository.findAll(pageable).getContent();
     }
 
     @Override

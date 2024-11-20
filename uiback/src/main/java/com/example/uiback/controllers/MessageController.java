@@ -15,8 +15,9 @@ public class MessageController {
     private MessageService messageService;
 
     @GetMapping
-    public List<Message> getAllMessages() {
-        return messageService.getAllMessages();
+    public List<Message> getMessages(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size) {
+        return messageService.getMessages(page, size);
     }
 
     @GetMapping("/{id}")
