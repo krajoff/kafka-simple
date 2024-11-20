@@ -41,9 +41,9 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_DB: kafka
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     healthcheck:
@@ -71,7 +71,7 @@ services:
   consumer:
     build: ./consumer
     ports:
-      - "8082:8080"
+      - "8080"
     depends_on:
       kafka:
         condition: service_healthy
@@ -79,11 +79,16 @@ services:
         condition: service_healthy
     environment:
       KAFKA_BROKER: kafka:9092
+      KAFKA_GROUP_ID: ${KAFKA_GROUP_ID}
     volumes:
       - ./consumer/build/libs/consumer.jar:/app/consumer.jar
     networks:
       - kafka-network
       - postgres-network
+    deploy:
+      replicas: 2
+    command: >
+      sh -c "PORT=$(echo $HOSTNAME | grep -o '[0-9]*' | head -1); java -jar /app/consumer.jar --server.port=$((BASE_PORT + PORT))"
 
   uiback:
     build: ./uiback
@@ -94,9 +99,9 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/kafka?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: ${DB_URL}?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./uiback/build/libs/uiback.jar:/app/uiback.jar
     networks:
